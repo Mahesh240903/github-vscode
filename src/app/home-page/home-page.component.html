@@ -1,0 +1,56 @@
+<div class="screen" *ngIf="addForm.enabled"> 
+</div>
+<div class="container">
+    <h1>Phone Book  App</h1>
+    <div style="display: flex; gap: 10px;">
+        <h4>Contacts</h4>
+        <button (click)="displayAddContactForm()">Add Contact</button>
+    </div> <br>
+    <div class="container">
+        <form [formGroup]="addForm" *ngIf="addForm.enabled" (ngSubmit)="addForm.valid && addContact()" class="form-group addForm">
+            <h1>New Contact</h1>
+            <label for="">First Name:</label>
+            <input type="text" formControlName = "firstName"  class="form-control"/>
+            <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="alert alert-danger">
+                 Name is requiered
+            </div>
+        
+            <label for="">Last name:</label>
+            <input type="text" formControlName = "lastName" class="form-control"/>
+        
+            <label for="">Number:</label>
+            <input type="text" formControlName = "number" class="form-control" />
+
+            <div *ngIf="number.invalid && (number.dirty || number.touched)" class="alert alert-danger">
+                <div *ngIf="number.hasError('required')">
+                    Number is required
+                </div>
+                <div *ngIf="number.hasError('minlength')">
+                    Number should have 10 numbers 
+                </div>
+                <div *ngIf="number.hasError('maxlength')">
+                    Number shoouldnt be more than 10
+                </div>
+           </div> <br>
+           <div style="display: flex; gap: 10px;">
+               <button type="submit">Submit</button>
+               <button type="button" (click)="exit()">Cancel</button>
+           </div>
+        </form>
+    </div>
+    <form [formGroup]="searchForm" class="form-group">
+        <input type="text" formControlName="searchBar" (ngModelChange)="search()" class="form-control"
+            placeholder="Search for contacts">
+    </form>
+
+    <div *ngFor="let contact of contacts; let i= index " >
+        <div style="display: flex;align-items: center; justify-content: space-between;padding: 0px 20px; width: 40%; background-color: rgb(230, 224, 224); border-radius: 20px;" >
+            <div>
+                <h5 style="font-size: 20px; font-weight: 800;">{{contact.firstName + " " + (contact.lastName ? ' ' + contact.lastName : '')}}</h5>
+                <p>{{contact.number}}</p>
+            </div>
+            <button (click)="deleteContact(i)" style="background-color: rgb(242, 136, 136); height: 25px; padding: 0px 20px;">Delete</button>
+        </div>
+        <br>
+    </div>
+</div>
